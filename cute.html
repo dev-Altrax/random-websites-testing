@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Be My Valentine?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
+  <style>
+    /* Basic reset */
+    body, h1, p, button, img {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Handlee', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      background-color: rgb(255, 154, 158);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+      max-width: 90%;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .question {
+      font-size: 2rem;
+      margin: 20px 0;
+    }
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .yes-btn, .no-btn {
+      font-size: 1.2rem;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+    .yes-btn {
+      background-color: #4caf50;
+      color: #fff;
+      transition: transform 0.5s ease-in-out;
+    }
+    .yes-btn:hover {
+      background-color: #43a047;
+      transform: scale(1.05);
+    }
+    .no-btn {
+      background-color: #f44336;
+      color: #fff;
+    }
+    .no-btn:hover {
+      background-color: #e53935;
+      transform: scale(1.05);
+    }
+    .hidden {
+      display: none;
+    }
+    /* Confetti Animation */
+    @keyframes confetti {
+      0% { transform: translateY(-100%); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: 0;
+      animation: confetti linear infinite;
+    }
+    .yay-container {
+      text-align: center;
+      font-size: 3rem;
+      margin-top: 50px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    /* Fullscreen effect for Yes button */
+    @keyframes expandYes {
+      0% { transform: scale(1); }
+      100% { transform: scale(100); }
+    }
+    .expand {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      width: 100px;
+      height: 50px;
+      font-size: 1.5rem;
+      transition: all 1s ease-in-out;
+      animation: expandYes 1s forwards;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .question {
+        font-size: 1.5rem;
+      }
+      .yes-btn, .no-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="love-hearts.gif" width="150" alt="Cute Heart" style="max-width: 100%;">
+    <p class="question" style="color: rgb(255, 0, 0);"> Will you be my Valentine? ❤️</p>
+    <div class="buttons">
+      <button class="yes-btn" onclick="yesClicked()">Yes</button>
+      <button class="no-btn" onclick="noClicked()">No</button>
+    </div>
+  </div>
+  
+  <script>
+    let noClickCount = 0;
+    function noClicked() {
+      const noBtn = document.querySelector('.no-btn');
+      const yesBtn = document.querySelector('.yes-btn');
+      const responses = [
+        "Are you sure?", 
+        "If you say no I'll be really sad :(",
+        "Are you absolutely 100% sure?",
+        "Give me a chance", 
+        ":("
+      ];
+      if (noClickCount < responses.length) {
+        noBtn.innerText = responses[noClickCount];
+        noClickCount++;
+        yesBtn.style.transform = `scale(${1 + noClickCount * 0.2})`;
+      } else {
+        noBtn.style.opacity = '0';
+        setTimeout(() => noBtn.classList.add('hidden'), 500);
+        setTimeout(() => {
+          yesBtn.classList.add('expand');
+        }, 600);
+      }
+    }
+    function yesClicked() {
+  document.body.innerHTML = `
+    <div class="yay-container">
+      <h1 style="color: red;">YAYYYYY!!!! I KNEW YOU'D SAY YES HEHE 🎉🎊🎈</h1>
+      <img src="cute-bears-love.gif" width="400" alt="Cute Teddy Bear" style="margin-top: 20px; max-width: 100%;">
+    </div>
+  `;
+
+  for (let i = 0; i < 100; i++) {
+    let confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    confetti.style.animationDuration = (Math.random() * 2 + 1) + "s";
+    document.body.appendChild(confetti);
+  }
+}
+  </script>
+</body>
+</html>
